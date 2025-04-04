@@ -33,10 +33,10 @@ export const Sidebar = ({ onNewItem }: SidebarProps) => {
           <Archive size={20} />
           <span>Archive</span>
         </button>
-        <button className="flex items-center gap-2 w-full p-2 rounded-lg bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50  hover:bg-gray-100 button">
+        <button className="flex items-center pt-5 gap-2 w-full p-2 rounded-lg bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50  hover:bg-gray-100 button">
           <Trash2 size={20} />
           <span>Trash</span>
-        </button> */}
+        </button>*/}
       </div>
       <div className="p-4 border-t border-gray-200">
         <UserProfile />

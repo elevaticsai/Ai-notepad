@@ -27,7 +27,7 @@ class FolderService {
   }
 
   async deleteFolder(id: string): Promise<void> {
-    await api.delete(`/folders/${id}`);
+    await api.delete(`/folders/deleteFolder/${id}`);
   }
 
   async restoreFolder(id: string): Promise<Folder> {

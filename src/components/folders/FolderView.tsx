@@ -1,5 +1,6 @@
-import { ChevronLeft, FolderIcon, Plus } from "lucide-react";
+import { ChevronLeft, Plus, FolderIcon, Trash2 } from "lucide-react";
 import { Folder, Note } from "../../types";
+import { useState } from "react";
 
 interface FolderViewProps {
   folder: Folder;
@@ -7,6 +8,7 @@ interface FolderViewProps {
   onBack: () => void;
   onNewItemClick: (folderId: string) => void;
   onNoteClick: (note: Note) => void;
+  onDeleteNote: (note: Note) => Promise<void>;
 }
 
 export const FolderView = ({
@@ -15,7 +17,28 @@ export const FolderView = ({
   onBack,
   onNewItemClick,
   onNoteClick,
+  onDeleteNote,
 }: FolderViewProps) => {
+  const [noteToDelete, setNoteToDelete] = useState<Note | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async (note: Note) => {
+    setNoteToDelete(note);
+  };
+
+  const confirmDelete = async () => {
+    if (!noteToDelete) return;
+    try {
+      setIsDeleting(true);
+      await onDeleteNote(noteToDelete);
+      setNoteToDelete(null);
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const stripHtml = (html: string) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || "";
@@ -49,12 +72,23 @@ export const FolderView = ({
           {notes.map((note) => (
             <div
               key={note._id}
-              onClick={() => onNoteClick(note)}
-              className={`${note.color} rounded-xl p-6 cursor-pointer hover:shadow-md transition-shadow`}
+              className={`${note.color} rounded-xl p-6 cursor-pointer hover:shadow-md transition-shadow relative group`}
             >
-              <h3 className="font-semibold mb-2">{note.title}</h3>
-              <div className="text-sm text-gray-600 line-clamp-3">
-                {stripHtml(note.content)}
+              <button
+                className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 hover:text-red-600 transition-colors z-10"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(note);
+                }}
+                title="Delete note"
+              >
+                <Trash2 size={18} />
+              </button>
+              <div onClick={() => onNoteClick(note)}>
+                <h3 className="font-semibold mb-2">{note.title}</h3>
+                <div className="text-sm text-gray-600 line-clamp-3">
+                  {stripHtml(note.content)}
+                </div>
               </div>
             </div>
           ))}
@@ -70,6 +104,39 @@ export const FolderView = ({
           </button>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {noteToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+            <h3 className="text-lg font-semibold mb-2">Delete Note</h3>
+            <p className="text-gray-600 mb-6">Are you sure you want to delete "{noteToDelete.title}"? This action cannot be undone.</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setNoteToDelete(null)}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center gap-2"
+                disabled={isDeleting}
+              >
+                {isDeleting ? (
+                  <>
+                    <span className="animate-spin">⏳</span>
+                    Deleting...
+                  </>
+                ) : (
+                  'Delete'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

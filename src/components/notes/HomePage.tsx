@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+
 import { format } from "date-fns";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { Note, Folder, TimePeriod } from "../../types";
@@ -16,6 +17,9 @@ interface HomePageProps {
   sensors: any;
   getFolderNotes: (folderId: string) => Note[];
   getUnassignedNotes: () => Note[];
+  notes: Note[];
+  onDeleteNote: (note: Note) => Promise<void>;
+  onDeleteFolder?: (folderId: string) => void;
 }
 
 export const HomePage = ({
@@ -29,6 +33,9 @@ export const HomePage = ({
   sensors,
   getFolderNotes,
   getUnassignedNotes,
+  // notes,
+  onDeleteNote,
+  onDeleteFolder,
 }: HomePageProps) => {
   return (
     <div className="flex-1 p-8">
@@ -66,9 +73,11 @@ export const HomePage = ({
               {folders.map((folder) => (
                 <div key={folder._id} className="flex-shrink-0">
                   <FolderCard
+                    key={folder._id}
                     folder={folder}
                     noteCount={getFolderNotes(folder._id).length}
                     onClick={() => onFolderClick(folder)}
+                    onDelete={onDeleteFolder}
                   />
                 </div>
               ))}
@@ -101,6 +110,7 @@ export const HomePage = ({
                 key={note._id}
                 note={note}
                 onClick={() => onNoteClick(note)}
+                onDelete={() => onDeleteNote(note)}
                 draggable
               />
             ))}

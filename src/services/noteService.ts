@@ -23,7 +23,7 @@ class NoteService {
   }
 
   async deleteNote(id: string): Promise<void> {
-    await api.delete(`/notes/${id}`);
+    await api.delete(`/notes/deleteNote/${id}`);
   }
 
   async archiveNote(id: string): Promise<Note> {

@@ -83,16 +83,13 @@ const MainApp = () => {
     const { active, over } = event;
     if (!over) return;
 
-    // Extract IDs from the draggable/droppable elements
     const noteId = active.id.toString().replace('note-', '');
     const folderId = over.id.toString().replace('folder-', '');
 
     if (noteId && folderId) {
       try {
-        // Update the note in the backend
         const updatedNote = await noteService.updateNote(noteId, { folderId });
         
-        // Update local state
         setNotes(notes.map((note) =>
           note._id === noteId ? updatedNote : note
         ));
@@ -285,6 +282,15 @@ const MainApp = () => {
     setShowNoteModal(true);
   };
 
+  const handleDeleteNote = async (noteToDelete: Note) => {
+      await noteService.deleteNote(noteToDelete._id);
+      setNotes(notes.filter(note => note._id !== noteToDelete._id));   
+  };
+
+  const handleDeleteFolder = async (folderId: string) => {
+    setFolders(folders.filter(folder => folder._id !== folderId));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 flex">
       {error ? (
@@ -312,6 +318,9 @@ const MainApp = () => {
                 sensors={sensors}
                 getFolderNotes={getFolderNotes}
                 getUnassignedNotes={getUnassignedNotes}
+                notes={notes}
+                onDeleteNote={handleDeleteNote}
+                onDeleteFolder={handleDeleteFolder}
               />
             ) : view === "folder" && selectedFolder ? (
               <FolderView
@@ -323,6 +332,7 @@ const MainApp = () => {
                 }}
                 onNewItemClick={handleNewItemClick}
                 onNoteClick={handleNoteClick}
+                onDeleteNote={handleDeleteNote}
               />
             ) : null}
           </div>
