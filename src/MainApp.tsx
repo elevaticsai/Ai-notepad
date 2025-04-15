@@ -178,14 +178,19 @@ const MainApp = () => {
 
   const handleSaveNote = async () => {
     try {
+      const content = editor?.getHTML() || "";
+      const imgMatch = content.match(/<img.*?src="(.*?)".*?>/);
+      const imgUrl = imgMatch ? imgMatch[1] : null;
+
       const noteData = {
         title: newNoteTitle,
-        content: editor?.getHTML() || "",
+        content: content,
         color: selectedColor,
         folderId: selectedFolder?._id || null,
         tags: selectedNote?.tags || [],
         isArchived: selectedNote?.isArchived || false,
         isDeleted: selectedNote?.isDeleted || false,
+        imgUrl: imgUrl,
       };
 
       if (selectedNote) {

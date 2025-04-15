@@ -1,0 +1,54 @@
+.imageResizer {
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+  user-select: none;
+}
+
+.imageResizer img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.resizeHandle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #1a73e8;
+  border: 2px solid white;
+  border-radius: 50%;
+  z-index: 100;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: auto;
+}
+
+.imageResizer:hover .resizeHandle {
+  opacity: 1;
+}
+
+.resizeHandleNw {
+  top: -6px;
+  left: -6px;
+  cursor: nw-resize;
+}
+
+.resizeHandleNe {
+  top: -6px;
+  right: -6px;
+  cursor: ne-resize;
+}
+
+.resizeHandleSw {
+  bottom: -6px;
+  left: -6px;
+  cursor: sw-resize;
+}
+
+.resizeHandleSe {
+  bottom: -6px;
+  right: -6px;
+  cursor: se-resize;
+}

@@ -51,7 +51,7 @@ export const NoteCard = ({ note, onClick, onDelete, draggable = false }: NoteCar
     <>
     <div
       ref={setNodeRef}
-      onClick={handleClick}
+      
       className={`${note.color} rounded-2xl p-6 cursor-pointer hover:shadow-md transition-all relative group
         ${isDragging ? 'opacity-50 scale-95' : ''}
         ${draggable ? 'hover:scale-[1.02] active:scale-95' : ''}`}
@@ -67,7 +67,7 @@ export const NoteCard = ({ note, onClick, onDelete, draggable = false }: NoteCar
       >
         <Trash2 size={18} />
       </button>
-      <h3 className="font-semibold mb-2">{note.title}</h3>
+      <h3 onClick={handleClick} className="font-semibold mb-2">{note.title}</h3>
       <div className="text-sm text-gray-600 line-clamp-2 overflow-hidden text-ellipsis">
         {stripHtml(note.content)}
       </div>

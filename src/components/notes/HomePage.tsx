@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-
 import { format } from "date-fns";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { Note, Folder, TimePeriod } from "../../types";

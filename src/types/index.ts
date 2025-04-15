@@ -4,6 +4,7 @@ export interface Note {
   title: string;
   content: string;
   color: string;
+  imgUrl: string | null;
   folderId: string | null;
   tags: string[];
   isArchived: boolean;

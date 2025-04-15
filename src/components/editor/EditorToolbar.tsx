@@ -11,6 +11,8 @@ import {
   Quote,
   Volume2,
 } from "lucide-react";
+import { useState } from "react";
+import ImageUploadModal from "./ImageUploadModal";
 
 interface EditorToolbarProps {
   editor: Editor | null;
@@ -27,6 +29,7 @@ export const EditorToolbar = ({
   onToggleSpeechRecognition,
   onReadNote,
 }: EditorToolbarProps) => {
+  const [showImageModal, setShowImageModal] = useState(false);
   return (
     <div className="border-b bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50  border-gray-200 p-2">
       <div className="flex items-center justify-between">
@@ -87,16 +90,21 @@ export const EditorToolbar = ({
           </button>
           <div className="h-4 w-px bg-gray-200 mx-2" />
           <button
-            onClick={() => {
-              const url = window.prompt("Enter image URL");
-              if (url && editor) {
-                editor.chain().focus().setImage({ src: url }).run();
-              }
-            }}
+            onClick={() => setShowImageModal(true)}
             className="toolbar-button"
           >
             <ImageIcon size={18} />
           </button>
+          <ImageUploadModal
+            isOpen={showImageModal}
+            onClose={() => setShowImageModal(false)}
+            onImageSelect={(url) => {
+              if (editor) {
+                editor.chain().focus().setImage({ src: url }).run();
+              }
+              setShowImageModal(false);
+            }}
+          />
           <button
             onClick={() => {
               const url = window.prompt("Enter link URL");
