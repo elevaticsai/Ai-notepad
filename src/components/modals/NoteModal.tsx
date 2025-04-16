@@ -42,10 +42,10 @@ export const NoteModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white w-3/4 h-3/4 rounded-3xl shadow-xl flex flex-col">
+    <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-white flex flex-col rounded-none shadow-none">
         {/* Modal Header */}
-        <div className="border-b bg-gradient-to-br rounded-3xl from-indigo-100 via-purple-50 to-blue-50 border-gray-200 p-4 flex justify-between items-center">
+        <div className="border-b bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50 border-gray-200 p-4 flex justify-between items-center">
           <input
             type="text"
             value={title}
@@ -86,11 +86,11 @@ export const NoteModal = ({
         />
 
         {/* Editor Content */}
-        <div onClick={clearSelection} className="flex-1 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100  overflow-y-auto p-6">
-          <EditorContent
-            editor={editor}
-            className="prose max-w-none h-full"
-          />
+        <div
+          onClick={clearSelection}
+          className="flex-1 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 overflow-y-auto p-6"
+        >
+          <EditorContent editor={editor} className="prose max-w-none h-full" />
         </div>
 
         {/* AI Context Menu */}
@@ -104,10 +104,8 @@ export const NoteModal = ({
         )}
 
         {/* Modal Footer */}
-        <div className="border-t bg-gradient-to-br rounded-3xl from-indigo-50 via-purple-50 to-blue-200  border-gray-200 p-4 flex justify-between items-center">
-          <div className="text-sm text-gray-500">
-            Press Ctrl + S to save
-          </div>
+        <div className="border-t bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-200 border-gray-200 p-4 flex justify-between items-center">
+          <div className="text-sm text-gray-500">Press Ctrl + S to save</div>
           <button
             onClick={onSave}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
